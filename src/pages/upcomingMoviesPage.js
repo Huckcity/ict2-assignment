@@ -5,7 +5,7 @@ import Spinner from "../components/spinner";
 import { getUpcomingMovies } from "../api/tmdb-api";
 import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 
-const UpcomingMoviesPage = (props) => {
+const UpcomingMoviesPage = () => {
   const { data, error, isLoading, isError } = useQuery(
     "upcoming",
     getUpcomingMovies
