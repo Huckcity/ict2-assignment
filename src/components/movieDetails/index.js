@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   chipRoot: {
-    display: "flex",
+    // display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -71,6 +71,16 @@ const MovieDetails = (props) => {
             label={`${movie.vote_average} (${movie.vote_count}`}
           />
           <Chip label={`Released: ${movie.release_date}`} />
+        </Paper>
+        <Paper component="ul" className={classes.chipSet}>
+          <Chip
+            label="Production Countries"
+            className={classes.chipLabel}
+            color="primary"
+          />
+          {movie.production_countries.map((c) => (
+            <Chip label={c.name} />
+          ))}
         </Paper>
       </div>
     </>
