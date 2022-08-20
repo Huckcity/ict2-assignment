@@ -15,20 +15,21 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
+    padding: "0.5rem",
   },
-  appbar: {
-    // background: 'none',
-  },
-  inactiveLink: {
-    color: "white",
-    padding: theme.spacing(1),
-    fontSize: "1.5rem",
+  navLink: {
+    textDecoration: "none",
+    color: "#fff",
+    margin: "1.5rem",
   },
   activeLink: {
-    color: "black",
-    padding: theme.spacing(1),
-    fontSize: "1.5rem",
-    background: "#bfbfbf",
+    backgroundColor: "#fff",
+    color: "#000",
+  },
+  inactiveLink: {
+    textDecoration: "none",
+    backgroundColor: "transparent",
+    color: "#fff",
   },
 }));
 
@@ -45,6 +46,7 @@ const SiteHeader = () => {
     { label: "Favourites", path: "/movies/favourites" },
     { label: "Upcoming", path: "/movies/upcoming" },
     { label: "Playlist", path: "/movies/playlist" },
+    { label: "Actors", path: "/actors" },
   ];
 
   const handleMenuSelect = (pageURL) => {
@@ -112,13 +114,15 @@ const SiteHeader = () => {
                 <NavLink
                   key={opt.label}
                   to={opt.path}
-                  className={({ isActive }) =>
-                    isActive ? classes.activeLink : classes.inactiveLink
+                  className={
+                    (classes.navLink,
+                    ({ isActive }) =>
+                      isActive ? classes.activeLink : classes.inactiveLink)
                   }
-                  color="inherit"
-                  // onClick={() => handleMenuSelect(opt.path)}
                 >
-                  {opt.label}
+                  <Typography variant="h6" className={classes.title}>
+                    {opt.label}
+                  </Typography>
                 </NavLink>
               ))}
             </>
