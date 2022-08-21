@@ -16,13 +16,14 @@ import Spinner from "../spinner";
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
+    opacity: 0.9,
   },
   media: { height: 300 },
 
   formControl: {
     margin: theme.spacing(1),
     minWidth: 220,
-    backgroundColor: "rgb(255, 255, 255)",
+    backgroundColor: "rgba(255, 255, 255)",
   },
 }));
 
