@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ImageList from "@material-ui/core/ImageList";
 import ImageListItem from "@material-ui/core/ImageListItem";
 import { getMovieImages } from "../../api/tmdb-api";
+import { getTvShowImages } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "../spinner";
 
@@ -23,12 +24,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TemplateMoviePage = ({ movie, children }) => {
+const TemplateMoviePage = ({ movie, tvshow, children }) => {
   const classes = useStyles();
+
+  const getMovieImagesVariant = movie ? ["movie", { id: movie.id }] : null;
+  const getTvImagesVariant = tvshow ? ["tvshow", { id: tvshow.id }] : null;
+
   const { data, error, isLoading, isError } = useQuery(
-    ["images", { id: movie.id }],
-    getMovieImages
+    movie ? getMovieImagesVariant : getTvImagesVariant,
+    movie ? getMovieImages : getTvShowImages
   );
+
+  const show = movie ? movie : tvshow;
 
   if (isLoading) {
     return <Spinner />;
@@ -37,11 +44,13 @@ const TemplateMoviePage = ({ movie, children }) => {
   if (isError) {
     return <h1>{error.message}</h1>;
   }
+
+  console.log(data);
   const images = data.posters;
 
   return (
     <div className={classes.root}>
-      <MovieHeader movie={movie} />
+      <MovieHeader show={show} />
 
       <Grid container spacing={5} style={{ padding: "15px" }}>
         <Grid item xs={3}>

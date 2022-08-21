@@ -6,10 +6,10 @@ import Fab from "@material-ui/core/Fab";
 import Drawer from "@material-ui/core/Drawer";
 import { makeStyles } from "@material-ui/core/styles";
 import MovieList from "../movieList";
+import TvList from "../tvList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "#bfbfbf",
     paddingTop: theme.spacing(7),
   },
 
@@ -21,17 +21,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MovieListPageTemplate({ movies, title, action }) {
+function ShowListPageTemplate({ movies, tvshows, title, action, controls }) {
   const classes = useStyles();
   const [titleFilter, setTitleFilter] = useState("");
   const [genreFilter, setGenreFilter] = useState("0");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const genreId = Number(genreFilter);
-
-  let displayedMovies = movies
+  const shows = movies ? movies : tvshows;
+  let displayedShows = shows
     .filter((m) => {
-      return m.title.toLowerCase().search(titleFilter.toLowerCase()) !== -1;
+      const title = m.name ? m.name : m.title;
+      return title.toLowerCase().search(titleFilter.toLowerCase()) !== -1;
     })
     .filter((m) => {
       return genreId > 0 ? m.genre_ids.includes(genreId) : true;
@@ -46,10 +47,11 @@ function MovieListPageTemplate({ movies, title, action }) {
     <>
       <Grid container className={classes.root}>
         <Grid item xs={12}>
-          <Header title={title} />
+          <Header title={title} controls={controls} />
         </Grid>
         <Grid item container spacing={5}>
-          <MovieList action={action} movies={displayedMovies} />
+          {movies && <MovieList action={action} movies={displayedShows} />}
+          {tvshows && <TvList action={action} tvshows={displayedShows} />}
         </Grid>
       </Grid>
       <Fab
@@ -74,4 +76,4 @@ function MovieListPageTemplate({ movies, title, action }) {
     </>
   );
 }
-export default MovieListPageTemplate;
+export default ShowListPageTemplate;

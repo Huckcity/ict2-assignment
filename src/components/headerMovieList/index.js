@@ -19,21 +19,26 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = (props) => {
   const classes = useStyles();
-  const title = props.title;
+  const { controls } = props;
+  const title = props.title ? props.title : props.tvshow.title;
   const navigate = useNavigate();
 
   return (
     <Paper component="div" className={classes.root}>
-      <IconButton aria-label="go back" onClick={() => navigate(-1)}>
-        <ArrowBackIcon color="primary" fontSize="large" />
-      </IconButton>
-
+      {controls && (
+        <IconButton aria-label="go back" onClick={() => navigate(-1)}>
+          <ArrowBackIcon color="primary" fontSize="large" />
+        </IconButton>
+      )}
       <Typography variant="h4" component="h3">
         {title}
       </Typography>
-      <IconButton aria-label="go forward" onClick={() => navigate(1)}>
-        <ArrowForwardIcon color="primary" fontSize="large" />
-      </IconButton>
+
+      {controls && (
+        <IconButton aria-label="go forward" onClick={() => navigate(1)}>
+          <ArrowForwardIcon color="primary" fontSize="large" />
+        </IconButton>
+      )}
     </Paper>
   );
 };

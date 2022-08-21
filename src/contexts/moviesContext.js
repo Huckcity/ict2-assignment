@@ -18,7 +18,6 @@ const MoviesContextProvider = (props) => {
     if (!playlist.includes(movie.id)) {
       let newPlaylist = [...playlist, movie.id];
       setPlaylist(newPlaylist);
-      console.log(newPlaylist);
     }
   };
 

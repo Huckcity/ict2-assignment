@@ -14,7 +14,7 @@ const PlaylistMoviesPage = () => {
   const playlistMovieQueries = useQueries(
     movieIds.map((movieId) => {
       return {
-        queryKey: ["movie", { id: movieId }],
+        queryKey: ["playlistMovie", { id: movieId }],
         queryFn: getMovie,
       };
     })
