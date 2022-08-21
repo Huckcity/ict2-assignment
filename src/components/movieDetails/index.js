@@ -11,6 +11,7 @@ import NavigationIcon from "@material-ui/icons/Navigation";
 import Fab from "@material-ui/core/Fab";
 import Drawer from "@material-ui/core/Drawer";
 import MovieReviews from "../movieReviews";
+import MovieCredits from "../movieCredits";
 
 const useStyles = makeStyles((theme) => ({
   chipRoot: {
@@ -101,6 +102,7 @@ const MovieDetails = ({ movie }) => {
       >
         <MovieReviews movie={movie} />
       </Drawer>
+      <MovieCredits movie={movie} />
     </>
   );
 };
