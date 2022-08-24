@@ -16,13 +16,18 @@ import Spinner from "../spinner";
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
+    opacity: 0.9,
   },
   media: { height: 300 },
-
+  rating: {
+    margin: theme.spacing(1),
+    minWidth: 100,
+    backgroundColor: "rgb(255, 255, 255)",
+  },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 220,
-    backgroundColor: "rgb(255, 255, 255)",
+    backgroundColor: "rgba(255, 255, 255)",
   },
 }));
 
@@ -37,10 +42,31 @@ export default function FilterMoviesCard(props) {
   if (isError) {
     return <h1>{error.message}</h1>;
   }
+
   const genres = data.genres;
   if (genres[0].name !== "All") {
     genres.unshift({ id: "0", name: "All" });
   }
+
+  const ratings = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const sortings = [
+    {
+      value: 0,
+      label: "Date - Newest to Oldest",
+    },
+    {
+      value: 1,
+      label: "Date - Oldest to Newest",
+    },
+    {
+      value: 2,
+      label: "Rating - Highest to Lowest",
+    },
+    {
+      value: 3,
+      label: "Rating - Lowest to Highest",
+    },
+  ];
 
   const handleChange = (e, type, value) => {
     e.preventDefault();
@@ -48,11 +74,22 @@ export default function FilterMoviesCard(props) {
   };
 
   const handleTextChange = (e, props) => {
-    handleChange(e, "name", e.target.value);
+    handleChange(e, "title", e.target.value);
   };
 
   const handleGenreChange = (e) => {
     handleChange(e, "genre", e.target.value);
+  };
+
+  const handleMinRatingChange = (e) => {
+    handleChange(e, "minRating", e.target.value);
+  };
+
+  const handleMaxRatingChange = (e) => {
+    handleChange(e, "maxRating", e.target.value);
+  };
+  const handleSortingChange = (e) => {
+    handleChange(e, "sorting", e.target.value);
   };
 
   return (
@@ -61,7 +98,7 @@ export default function FilterMoviesCard(props) {
         <CardContent>
           <Typography variant="h5" component="h1">
             <SearchIcon fontSize="large" />
-            Filter the movies.
+            Filter Movies:
           </Typography>
           <TextField
             className={classes.formControl}
@@ -72,6 +109,9 @@ export default function FilterMoviesCard(props) {
             variant="filled"
             onChange={handleTextChange}
           />
+        </CardContent>
+
+        <CardContent>
           <FormControl className={classes.formControl}>
             <InputLabel id="genre-label">Genre</InputLabel>
             <Select
@@ -90,13 +130,66 @@ export default function FilterMoviesCard(props) {
             </Select>
           </FormControl>
         </CardContent>
+        <CardContent>
+          <FormControl className={classes.rating}>
+            <InputLabel id="min-label">Min Rating</InputLabel>
+            <Select
+              labelId="min-label"
+              id="min-select"
+              value={props.minRatingFilter}
+              onChange={handleMinRatingChange}
+            >
+              {ratings.map((rating) => {
+                return (
+                  <MenuItem key={`min${rating} `} value={rating}>
+                    {rating}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+          <FormControl className={classes.rating}>
+            <InputLabel id="max-label">Max Rating</InputLabel>
+            <Select
+              labelId="max-label"
+              id="max-select"
+              value={props.maxRatingFilter}
+              onChange={handleMaxRatingChange}
+            >
+              {ratings.map((rating) => {
+                return (
+                  <MenuItem key={`max${rating}`} value={rating}>
+                    {rating}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </CardContent>
       </Card>
       <Card className={classes.root} variant="outlined">
         <CardContent>
           <Typography variant="h5" component="h1">
             <SearchIcon fontSize="large" />
-            Sort the movies.
+            Sort Movies:
           </Typography>
+          <FormControl className={classes.formControl}>
+            <InputLabel id="sort-label">Sort by</InputLabel>
+            <Select
+              labelId="sort-label"
+              id="sort-select"
+              value={props.movieSorting}
+              onChange={handleSortingChange}
+            >
+              {sortings.map((sort) => {
+                return (
+                  <MenuItem key={sort.value} value={sort.value}>
+                    {sort.label}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
         </CardContent>
       </Card>
     </>

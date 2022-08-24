@@ -29,7 +29,6 @@ function ActorListPageTemplate({ actors, title, action }) {
 
   const genreId = Number(genreFilter);
 
-  console.log(actors);
   let displayedActors = actors
     .filter((a) => {
       return a.name.toLowerCase().search(titleFilter.toLowerCase()) !== -1;

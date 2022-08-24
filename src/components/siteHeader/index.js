@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -11,6 +11,7 @@ import Menu from "@material-ui/core/Menu";
 import { useNavigate, NavLink } from "react-router-dom";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { AuthContext } from "../../contexts/authContext";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -39,7 +40,7 @@ const SiteHeader = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
+  const { token, signout } = useContext(AuthContext);
   const open = Boolean(anchorEl);
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -47,6 +48,7 @@ const SiteHeader = () => {
     { label: "Upcoming", path: "/movies/upcoming" },
     { label: "Playlist", path: "/movies/playlist" },
     { label: "Actors", path: "/actors" },
+    { label: "TV Shows", path: "/tv" },
   ];
 
   const handleMenuSelect = (pageURL) => {
@@ -106,6 +108,14 @@ const SiteHeader = () => {
                     {opt.label}
                   </MenuItem>
                 ))}
+
+                {token ? (
+                  <MenuItem onClick={signout}>Sign Out</MenuItem>
+                ) : (
+                  <MenuItem onClick={() => navigate("/login")}>
+                    Sign In
+                  </MenuItem>
+                )}
               </Menu>
             </>
           ) : (
@@ -125,6 +135,25 @@ const SiteHeader = () => {
                   </Typography>
                 </NavLink>
               ))}
+              {token ? (
+                <NavLink
+                  to="/logout"
+                  className={(classes.navLink, classes.inactiveLink)}
+                >
+                  <Typography variant="h6" className={classes.title}>
+                    Sign Out
+                  </Typography>
+                </NavLink>
+              ) : (
+                <NavLink
+                  to="/login"
+                  className={(classes.navLink, classes.inactiveLink)}
+                >
+                  <Typography variant="h6" className={classes.title}>
+                    Sign In
+                  </Typography>
+                </NavLink>
+              )}
             </>
           )}
         </Toolbar>
