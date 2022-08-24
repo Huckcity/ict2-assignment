@@ -26,9 +26,16 @@ function ShowListPageTemplate({ movies, tvshows, title, action, controls }) {
   const [titleFilter, setTitleFilter] = useState("");
   const [genreFilter, setGenreFilter] = useState("0");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [minRatingFilter, setMinRatingFilter] = useState("0");
+  const [maxRatingFilter, setMaxRatingFilter] = useState("10");
+  const [movieSorting, setMovieSorting] = useState("0");
 
   const genreId = Number(genreFilter);
   const shows = movies ? movies : tvshows;
+  const minRating = minRatingFilter;
+  const maxRating = maxRatingFilter;
+  const sorting = Number(movieSorting);
+
   let displayedShows = shows
     .filter((m) => {
       const title = m.name ? m.name : m.title;
@@ -36,11 +43,38 @@ function ShowListPageTemplate({ movies, tvshows, title, action, controls }) {
     })
     .filter((m) => {
       return genreId > 0 ? m.genre_ids.includes(genreId) : true;
+    })
+    .filter((m) => {
+      return (
+        Number(m.vote_average) > minRating && Number(m.vote_average) < maxRating
+      );
+    })
+    .sort((a, b) => {
+      if (sorting === 0) {
+        return new Date(b.release_date) - new Date(a.release_date);
+      } else if (sorting === 1) {
+        return new Date(a.release_date) - new Date(b.release_date);
+      } else if (sorting === 2) {
+        return b.vote_average - a.vote_average;
+      } else if (sorting === 3) {
+        return a.vote_average - b.vote_average;
+      } else {
+        return new Date(b.release_date) - new Date(a.release_date);
+      }
     });
 
   const handleChange = (type, value) => {
-    if (type === "name") setTitleFilter(value);
-    else setGenreFilter(value);
+    if (type === "title") {
+      setTitleFilter(value);
+    } else if (type === "minRating") {
+      setMinRatingFilter(value);
+    } else if (type === "maxRating") {
+      setMaxRatingFilter(value);
+    } else if (type === "sorting") {
+      setMovieSorting(value);
+    } else {
+      setGenreFilter(value);
+    }
   };
 
   return (
@@ -71,6 +105,9 @@ function ShowListPageTemplate({ movies, tvshows, title, action, controls }) {
           onUserInput={handleChange}
           titleFilter={titleFilter}
           genreFilter={genreFilter}
+          minRatingFilter={minRatingFilter}
+          maxRatingFilter={maxRatingFilter}
+          movieSorting={movieSorting}
         />
       </Drawer>
     </>
